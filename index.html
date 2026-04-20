@@ -38,8 +38,8 @@ body {
 }
 
 #intro img {
-  width: 160px;
-  border-radius: 20px;
+  width: 300px;
+  border-radius: 25px;
   animation: float 3s ease-in-out infinite;
 }
 
@@ -48,9 +48,10 @@ body {
 }
 
 #intro button {
-  margin-top: 20px;
-  padding: 12px 25px;
-  border-radius: 12px;
+  margin-top: 25px;
+  padding: 16px 35px;
+  font-size: 18px;
+  border-radius: 15px;
   border: none;
   background: pink;
   cursor: pointer;
@@ -89,7 +90,7 @@ h1 {
 
 .zoomText {
   margin-top: 15%;
-  font-size: 22px;
+  font-size: 60px;
   animation: zoomSmooth 2s ease forwards;
 }
 
@@ -100,9 +101,14 @@ h1 {
 
 .subText {
   opacity:0;
-  margin-top:20px;
+  margin-top:25px;
+  font-size: 24px;
   animation: fadeIn 2s forwards;
   animation-delay:1.5s;
+}
+
+#ending img {
+  animation: zoomSmooth 2s ease;
 }
 </style>
 </head>
@@ -112,13 +118,16 @@ h1 {
 <!-- INTRO -->
 <div id="intro">
   <img src="https://bom.edu.vn/public/upload/2024/12/meme-dang-yeu-89.webp">
-  <button onclick="start()">Mở bất ngờ 🎁</button>
+  <button onclick="playMusic(); start()">Mở bất ngờ 🎁</button>
 </div>
 
 <!-- MAIN -->
 <div id="main">
   <h1>🎉 Happy Birthday Neko 🎂</h1>
   <div id="msg"></div>
+
+  <img src="https://hinhanhcute.com/wp-content/uploads/2025/10/Hinh-anh-sinh-nhat-cute-ruc-ro.webp"
+       style="width:220px; margin-top:25px; border-radius:15px;">
 </div>
 
 <!-- ENDING -->
@@ -127,10 +136,13 @@ h1 {
   <p class="subText">Hy vọng bạn thích món quà nhỏ này… 💖</p>
 
   <img src="https://thuvienmeme.com/wp-content/uploads/2024/07/meme-xau-ho-do-mat-che-mat.jpg"
-       style="width:150px; margin-top:20px; border-radius:15px;">
+       style="width:280px; margin-top:30px; border-radius:20px;">
 </div>
 
-<audio id="music" src="https://www2.cs.uic.edu/~i101/SoundFiles/HappyBirthday.mid"></audio>
+<!-- 🔥 NHẠC MP3 -->
+<audio id="music">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 const messages = [
@@ -147,7 +159,14 @@ const messages = [
 let i = 0;
 let emojiRunning = false;
 
-/* START */
+/* ===== PHÁT NHẠC NGAY KHI CLICK ===== */
+function playMusic(){
+  let music = document.getElementById("music");
+  music.currentTime = 0;
+  music.play().catch(err => console.log(err));
+}
+
+/* ===== START ===== */
 function start(){
   let intro = document.getElementById("intro");
   let main = document.getElementById("main");
@@ -157,16 +176,12 @@ function start(){
   setTimeout(()=>{
     intro.style.display="none";
     main.style.display="block";
-    main.classList.add("fadeIn");
 
-    document.getElementById("music").play();
     startEmojiEffect();
-
     typeWriter(messages[i]);
   },1000);
 }
 
-/* TYPEWRITER */
 function typeWriter(text){
   let msg = document.getElementById("msg");
   msg.innerHTML = "";
@@ -189,7 +204,6 @@ function typeWriter(text){
   typing();
 }
 
-/* EMOJI */
 function startEmojiEffect() {
   emojiRunning = true;
 
@@ -218,7 +232,6 @@ function spawnEmoji() {
   setTimeout(() => e.remove(), 4000);
 }
 
-/* ENDING */
 function showEnding(){
   let main = document.getElementById("main");
   let ending = document.getElementById("ending");
@@ -230,7 +243,6 @@ function showEnding(){
   setTimeout(()=>{
     main.style.display="none";
     ending.style.display="block";
-    ending.classList.add("fadeIn");
   },1000);
 }
 </script>
