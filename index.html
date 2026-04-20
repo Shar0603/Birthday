@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Gửi Neko 💖</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  overflow: hidden;
+  font-family: Arial;
+  color: white;
+  text-align: center;
+}
+
+/* ===== TRANSITION ===== */
+.fadeOut { animation: fadeOut 1s forwards; }
+.fadeIn { animation: fadeIn 1.2s forwards; }
+
+@keyframes fadeOut {
+  to { opacity: 0; transform: scale(0.96); filter: blur(5px);}
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(1.04); filter: blur(5px);}
+  to { opacity: 1; transform: scale(1); filter: blur(0);}
+}
+
+/* ===== INTRO ===== */
+#intro {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#intro img {
+  width: 160px;
+  border-radius: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  50% { transform: translateY(-10px);}
+}
+
+#intro button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  border-radius: 12px;
+  border: none;
+  background: pink;
+  cursor: pointer;
+}
+
+/* ===== MAIN ===== */
+#main { display: none; }
+
+h1 {
+  margin-top: 12%;
+  font-size: 48px;
+}
+
+#msg {
+  margin-top: 30px;
+  font-size: 22px;
+  min-height: 80px;
+}
+
+/* ===== EMOJI ===== */
+.emoji {
+  position: absolute;
+  font-size: 22px;
+  pointer-events: none;
+  animation: floatUp 4s linear forwards;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(0.8); opacity: 0;}
+  20% { opacity: 1;}
+  100% { transform: translateY(-120vh) scale(1.2); opacity: 0;}
+}
+
+/* ===== ENDING ===== */
+#ending { display:none; }
+
+.zoomText {
+  margin-top: 15%;
+  font-size: 22px;
+  animation: zoomSmooth 2s ease forwards;
+}
+
+@keyframes zoomSmooth {
+  from { transform: scale(0.6); opacity:0;}
+  to { transform: scale(1); opacity:1;}
+}
+
+.subText {
+  opacity:0;
+  margin-top:20px;
+  animation: fadeIn 2s forwards;
+  animation-delay:1.5s;
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+  <img src="https://bom.edu.vn/public/upload/2024/12/meme-dang-yeu-89.webp">
+  <button onclick="start()">Mở bất ngờ 🎁</button>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <h1>🎉 Happy Birthday Neko 🎂</h1>
+  <div id="msg"></div>
+</div>
+
+<!-- ENDING -->
+<div id="ending">
+  <h1 class="zoomText">🎉 Happy Birthday Neko 🎉</h1>
+  <p class="subText">Hy vọng bạn thích món quà nhỏ này… 💖</p>
+
+  <img src="https://thuvienmeme.com/wp-content/uploads/2024/07/meme-xau-ho-do-mat-che-mat.jpg"
+       style="width:150px; margin-top:20px; border-radius:15px;">
+</div>
+
+<audio id="music" src="https://www2.cs.uic.edu/~i101/SoundFiles/HappyBirthday.mid"></audio>
+
+<script>
+const messages = [
+  "Sinh nhật không chỉ là thêm một tuổi...✨",
+  "Mà là thêm những trải nghiệm và những kỷ niệm 🌿",
+  "Chúc Neko luôn giữ được nụ cười của mình☺️",
+  "Dù có những lúc cuộc sống không dễ dàng 😞 ",
+  "Hy vọng rằng mỗi một ngày trôi qua 🌟🌟",
+  "Đều mang đến cho bạn một chút bình yên và niềm vui 💖",
+  "Và những điều tốt đẹp nhất sẽ luôn tìm đến bạn 🍀🍀",
+  "Và cuối cùng tui chúc bạn luôn xinh đẹp, vui vẻ và gặp nhiều may mắn trong cuộc sống ☺️☺️",
+];
+
+let i = 0;
+let emojiRunning = false;
+
+/* START */
+function start(){
+  let intro = document.getElementById("intro");
+  let main = document.getElementById("main");
+
+  intro.classList.add("fadeOut");
+
+  setTimeout(()=>{
+    intro.style.display="none";
+    main.style.display="block";
+    main.classList.add("fadeIn");
+
+    document.getElementById("music").play();
+    startEmojiEffect();
+
+    typeWriter(messages[i]);
+  },1000);
+}
+
+/* TYPEWRITER */
+function typeWriter(text){
+  let msg = document.getElementById("msg");
+  msg.innerHTML = "";
+  let j = 0;
+
+  function typing(){
+    if(j < text.length){
+      msg.innerHTML += text.charAt(j);
+      j++;
+      setTimeout(typing, 40);
+    } else {
+      i++;
+      if(i < messages.length){
+        setTimeout(()=>typeWriter(messages[i]),1000);
+      } else {
+        setTimeout(showEnding,1500);
+      }
+    }
+  }
+  typing();
+}
+
+/* EMOJI */
+function startEmojiEffect() {
+  emojiRunning = true;
+
+  function loop() {
+    if (!emojiRunning) return;
+    spawnEmoji();
+    setTimeout(loop, 400);
+  }
+  loop();
+}
+
+function stopEmojiEffect() {
+  emojiRunning = false;
+}
+
+function spawnEmoji() {
+  const emojis = ["💖","✨","🌸"];
+  const e = document.createElement("div");
+
+  e.className = "emoji";
+  e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+  e.style.left = Math.random() * 100 + "vw";
+  e.style.bottom = "-20px";
+
+  document.body.appendChild(e);
+  setTimeout(() => e.remove(), 4000);
+}
+
+/* ENDING */
+function showEnding(){
+  let main = document.getElementById("main");
+  let ending = document.getElementById("ending");
+
+  stopEmojiEffect();
+
+  main.classList.add("fadeOut");
+
+  setTimeout(()=>{
+    main.style.display="none";
+    ending.style.display="block";
+    ending.classList.add("fadeIn");
+  },1000);
+}
+</script>
+
+</body>
+</html>
